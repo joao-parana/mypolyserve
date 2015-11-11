@@ -1,0 +1,15 @@
+#!/bin/bash
+currentPath=`pwd`
+echo "Estou em '$currentPath' e vou gerar o componente '$1'. Usualmente o diretório é ~/Desktop/Development/components !  Deseja continuar? (y)"
+while read -e -t 1; do : ; done
+read resp
+if [ $resp. != 'y.' ]; then
+	echo "Cancelando a criacao do compoenete '$1'"
+    exit 0
+fi
+
+echo "Gerando componente '$1' em '$currentPath/$1'"
+
+mkdir -p $1 && cd $_
+yo polymer:seed $1
+

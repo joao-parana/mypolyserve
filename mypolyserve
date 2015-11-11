@@ -1,0 +1,50 @@
+#!/usr/bin/env node
+'use strict';
+
+const resolve = require('resolve');
+const argv = require('minimist')(process.argv);
+
+process.title = 'polyserve';
+
+if (argv.h || argv.help) {
+  console.log(`polyserve: web server for bower components
+Options:
+  -p <port>        defaults to 8080
+  -o <filename>    open page in default browser on startup (default: index.html)
+  -b <browsername> use this browser instead of default
+                   (ex: 'Google Chrome Canary')
+  -H <hostname>    use this hostname instead of localhost
+`);
+  process.exit(0);
+}
+
+resolve('polyserve', {basedir: process.cwd()}, function(error, path) {
+  console.log('path: ' + path);
+  console.log('port: ' + argv.p);
+  console.log('page: ' + argv.o);
+  console.log('host: ' + argv.H);
+  console.log('browser: ' + argv.b);
+  let polyserve = path ? require(path) : require('polyserve');
+    polyserve.startServer({
+      port: argv.p,
+      page: argv.o,
+      host: argv.H,
+      browser: argv.b
+    }).then(function(server){
+      console.log("polyserve carregado e pronto para uso");
+      console.log(server.domain);
+      // Here I use the server created by polyserve, and attatch the
+      // websocket server to it
+
+      var socketServer = new WebSocketServer({server: server});
+      socketServer.on("connection", function(){
+        // Generating sampledata
+        let sampledata = { msg: "oi mundo", testId: 1 };
+        socketServer.send(sampledata, function(){
+
+        });
+      });
+    }).catch((e) => {
+      process.exit(69);
+    });
+});
