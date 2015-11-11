@@ -3,6 +3,18 @@
     cd ~/bin
     git clone https://github.com/joao-parana/mypolyserve.git
 
+
+Ou, se não desejar clonar o repositório:
+
+    cd ~/bin
+    curl -o xx.zip https://codeload.github.com/joao-parana/mypolyserve/zip/v1.0 \
+         && unzip xx.zip \
+         && rm xx.zip \
+         && mv mypolyserve-1.0/* . \
+         && mv mypolyserve-1.0/.gitignore . \
+         && rmdir mypolyserve-1.0
+
+
 É necessário executar os comandos abaixo para instalar as dependências: 
 
     cd ~/bin 
